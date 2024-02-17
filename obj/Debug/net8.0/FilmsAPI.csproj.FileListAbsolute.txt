@@ -109,3 +109,5 @@ C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\bin\Debug\net8.0\Newtonsoft.Json.dl
 C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\bin\Debug\net8.0\Castle.Core.dll
 C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\obj\Debug\net8.0\FilmsAPI.sourcelink.json
+C:\Users\USER\source\repos\FilmsAPI\FilmsAPI\bin\Debug\net8.0\dotenv.net.dll

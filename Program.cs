@@ -2,14 +2,20 @@ using System.Text.Json.Serialization;
 using FilmsAPI.Database;
 using FilmsAPI.Profile;
 using Microsoft.EntityFrameworkCore;
+using dotenv.net;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("FilmConnection");
+DotEnv.Load();
+string? databaseConnection = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+if (string.IsNullOrEmpty(databaseConnection))
+{
+    throw new ApplicationException("A variável de ambiente CONNECTION_STRING não está definida.");
+}
 
 builder.Services.AddDbContext<FilmContext>(options =>
 {
-   options.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseLazyLoadingProxies().UseMySql(databaseConnection, new MySqlServerVersion(new Version(8, 0, 23)));
 });
 
 
