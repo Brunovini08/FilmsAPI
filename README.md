@@ -1,8 +1,4 @@
-Ótimo, se o seu projeto está organizado dessa maneira, podemos adaptar o README para refletir essa estrutura. Aqui está uma versão atualizada:
-
----
-
-# API de Filmes em C# - ReadMe
+# API de Filmes em C#/.NET
 
 ## Descrição
 
