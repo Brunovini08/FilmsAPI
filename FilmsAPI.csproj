@@ -45,6 +45,7 @@
   <ItemGroup>
     <None Remove="Infra\**" />
     <None Remove="Handles\**" />
+    <None Remove="Dockerfile" />
   </ItemGroup>
 
 </Project>

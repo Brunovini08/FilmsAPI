@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 # API de Filmes em C#/.NET 
 
 ## Descrição
 
 Esta é uma API de filmes desenvolvida em C# utilizando o framework ASP.NET Core, Entity Framework Core para interação com um banco de dados MySQL. O projeto segue os princípios SOLID para garantir uma arquitetura robusta e escalável. AutoMapper é usado para mapeamento de entidades e DTOs.
+=======
+# API de Filmes em C#/.NET com Camada de Serviço
+
+## Descrição
+
+Esta é uma API de filmes desenvolvida em C# utilizando o framework ASP.NET Core, Entity Framework Core para interação com um banco de dados MySQL e uma camada de serviço para melhorar a modularidade e organização do código. O projeto segue os princípios SOLID para garantir uma arquitetura robusta e escalável. AutoMapper é usado para mapeamento de entidades e DTOs.
+>>>>>>> 332b98c3f961e7ac52d12b12e4b90be71da1f136
 
 ## Estrutura do Projeto
 
@@ -30,10 +38,17 @@ project-root/
 |   |-- Profiles/
 |       |-- MappingProfiles.cs
 |-- Services/
+<<<<<<< HEAD
 |       |--AddressService.cs
 |       |--FilmService.cs
 |       |--MovieThaterService.cs
 |       |--SectionService.cs
+=======
+|       |-- AddressService.cs
+|       |-- FilmService.cs
+|       |-- MovieThaterService.cs
+|       |-- SectionService.cs
+>>>>>>> 332b98c3f961e7ac52d12b12e4b90be71da1f136
 |-- appsettings.json
 |-- .env
 |-- Program.cs
@@ -43,6 +58,10 @@ project-root/
 
 1. **Address:**
    - Cadastrar, visualizar, atualizar e excluir endereços.
+<<<<<<< HEAD
+=======
+   - Associar endereço a cinema.
+>>>>>>> 332b98c3f961e7ac52d12b12e4b90be71da1f136
 
 2. **Film:**
    - Cadastrar, visualizar, atualizar e excluir filmes.
