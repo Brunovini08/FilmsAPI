@@ -22,13 +22,18 @@ project-root/
 |       |-- FilmDto.cs
 |       |-- MovieTheaterDto.cs
 |       |-- SectionDto.cs
-|   |-- Profiles/
-|       |-- MappingProfiles.cs
-|   |-- Models/
+|-- Models/
 |       |-- Address.cs
 |       |-- Film.cs
 |       |-- MovieTheater.cs
 |       |-- Section.cs
+|   |-- Profiles/
+|       |-- MappingProfiles.cs
+|-- Services/
+|       |--AddressService.cs
+|       |--FilmService.cs
+|       |--MovieThaterService.cs
+|       |--SectionService.cs
 |-- appsettings.json
 |-- .env
 |-- Program.cs
