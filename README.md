@@ -2,9 +2,6 @@ API de Filmes em C#/.NET com Camada de Serviço
 Descrição
 Esta é uma API de filmes desenvolvida em C# utilizando o framework ASP.NET Core, Entity Framework Core para interação com um banco de dados MySQL e uma camada de serviço para melhorar a modularidade e organização do código. O projeto segue os princípios SOLID para garantir uma arquitetura robusta e escalável. AutoMapper é usado para mapeamento de entidades e DTOs.
 
-Estrutura do Projeto
-lua
-Copy code
 project-root/
 |-- src/
 |   |-- Controllers/
@@ -35,6 +32,7 @@ project-root/
 |-- appsettings.json
 |-- .env
 |-- Program.cs
+
 Funcionalidades Principais
 Address:
 
