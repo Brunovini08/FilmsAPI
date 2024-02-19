@@ -3,6 +3,7 @@ using AutoMapper;
 using FilmsAPI.Database;
 using FilmsAPI.Database.Dtos;
 using FilmsAPI.Models;
+using FilmsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmsAPI.Controllers;
@@ -11,54 +12,38 @@ namespace FilmsAPI.Controllers;
 [Route("[controller]")]
 public class SectionController : ControllerBase
 {
-    private FilmContext _context;
-    private IMapper _mapper;
+    private SectionService _sectionService;
 
-    public SectionController(FilmContext context, IMapper mapper)
+    public SectionController(SectionService sectionService)
     {
-        _context = context;
-        _mapper = mapper;
+        _sectionService = sectionService;
     }
     
     [HttpPost]
     public IActionResult PostSection(CreateSectionDto createSectionDto)
     {
-        try
-        {
-            var section = _mapper.Map<Section>(createSectionDto);
-            _context.Sections.Add(section);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetSectionById), new { filmId = section.FilmId, movietheaterId = section.MovieTheaterId }, section);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            throw;
-        }
+        var section = _sectionService.PostSection(createSectionDto);
+        return CreatedAtAction(nameof(GetSectionById), new { filmId = section.FilmId, movietheaterId = section.MovieTheaterId }, section);
     }
 
     [HttpGet]
-    public IEnumerable<ReadSectionDto> GetSection()
+    public IActionResult GetSection()
     {
-        return _mapper.Map<List<ReadSectionDto>>(_context.Sections);
+        var section = _sectionService.GetSection();
+        return Ok(section);
     }
 
     [HttpGet("{filmId}/{movietheaterId}")]
-    public IActionResult GetSectionById(int filmid, int movietheaterId)
+    public IActionResult GetSectionById(int filmId, int movietheaterId)
     {
-        var section = _context.Sections.FirstOrDefault(section => section.FilmId == filmid && section.MovieTheaterId == movietheaterId);
-        if (section == null) return NotFound();
-        var sectionDto = _mapper.Map<ReadSectionDto>(section);
-        return Ok(sectionDto);
+        var section = _sectionService.GetSectionById(filmId, movietheaterId);
+        return Ok(section);
     }
 
     [HttpDelete("{filmId}/{movietheaterId}")]
-    public IActionResult DeleteSection(int filmid, int movietheaterId)
+    public IActionResult DeleteSection(int filmId, int movietheaterId)
     {
-        var section = _context.Sections.FirstOrDefault(section => section.FilmId == filmid && section.MovieTheaterId == movietheaterId);
-        if (section == null) return NotFound();
-        _context.Remove(section);
-        _context.SaveChanges();
+        _sectionService.DeleteSection(filmId, movietheaterId);
         return NoContent();
     }
 }

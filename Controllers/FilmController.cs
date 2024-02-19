@@ -2,6 +2,7 @@
 using FilmsAPI.Database;
 using FilmsAPI.Database.Dtos;
 using FilmsAPI.Models;
+using FilmsAPI.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +12,12 @@ namespace FilmsAPI.Controllers;
 [Route("[controller]")]
 public class FilmController : ControllerBase
 {
-    private FilmContext _context;
-    private IMapper _mapper;
 
-    public FilmController(FilmContext context, IMapper mapper)
+    private FilmService _filmService;
+
+    public FilmController(FilmService filmService)
     {
-        _context = context;
-        _mapper = mapper;
+        _filmService = filmService;
     }
     
     [HttpPost]
@@ -25,84 +25,50 @@ public class FilmController : ControllerBase
         [FromBody] CreateFilmDto createFilmDto
         )
     {
-        try
-        {
-            var film = _mapper.Map<Film>(createFilmDto);
-            _context.Films.Add(film);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetFilmById),
-                new { id = film.Id },
-                film);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        var film = _filmService.PostFilm(createFilmDto);
+        return Ok(film);
     }
 
     [HttpGet]
-    public IEnumerable<ReadFilmDto> GetFilm(
+    public IActionResult GetFilm(
         [FromQuery] int skip = 0,
         [FromQuery] int take = 10,
         [FromQuery] string? movieTheaterName = null
         )
     {
-        if (movieTheaterName == null)
-        {
-            return _mapper.Map<List<ReadFilmDto>>(_context.Films.Skip(skip).Take(take).ToList());
-        }
-
-        return _mapper.Map<List<ReadFilmDto>>(_context.Films.Skip(skip).Take(take).Where(film =>
-            film.Sections.Any(section => section.MovieTheater.Name == movieTheaterName)).ToList());
+        var getFilms = _filmService.GetFilm(skip, take, movieTheaterName);
+        return Ok(getFilms);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetFilmById(int id)
     {
-        var film = _context.Films.FirstOrDefault(film => film.Id == id);
-        if (film == null) return NotFound();
-        var filmDto = _mapper.Map<ReadFilmDto>(film);
-        return Ok(filmDto);
+        var film = _filmService.GetById(id);
+        return Ok(film);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateFilm(int id, [FromBody] UpdateFilmDto filmDto)
+    public IActionResult UpdateFilm(int id, [FromBody] UpdateFilmDto updateFilmDto)
     {
-        var film = _context.Films.FirstOrDefault(film => film.Id == id);
-        if (film == null) NotFound();
-        _mapper.Map(filmDto, film);
-        _context.SaveChanges();
+        _filmService.UpdateFilm(updateFilmDto, id);
         return NoContent();
-        
     }
 
     [HttpPatch("{id}")]
     public IActionResult PatchFilm(int id, JsonPatchDocument<UpdateFilmDto> filmPath)
     {
-        var film = _context.Films.FirstOrDefault(film => film.Id == id);
-        if (film == null) return NotFound();
-
-        var updateFilm = _mapper.Map<UpdateFilmDto>(film);
-        filmPath.ApplyTo(updateFilm, ModelState);
-
-        if (!TryValidateModel(updateFilm))
+        var success = _filmService.PatchFilm(id, filmPath, ModelState);
+        if (!success)
         {
             return ValidationProblem(ModelState);
         }
-        
-        _mapper.Map(updateFilm, film);
-        _context.SaveChanges();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteFilm(int id)
     {
-        var film = _context.Films.FirstOrDefault(film => film.Id == id);
-        if (film == null) return NotFound();
-        _context.Remove(film);
-        _context.SaveChanges();
+        _filmService.DeleteFilm(id);
         return NoContent();
     }
 }

@@ -28,18 +28,22 @@
     <Compile Remove="Models\Category.cs" />
     <Compile Remove="Models\CategoryFilms.cs" />
     <Compile Remove="Infra\**" />
+    <Compile Remove="Handles\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Infra\**" />
+    <EmbeddedResource Remove="Handles\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Infra\**" />
+    <Content Remove="Handles\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Infra\**" />
+    <None Remove="Handles\**" />
   </ItemGroup>
 
 </Project>

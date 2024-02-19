@@ -3,6 +3,7 @@ using FilmsAPI.Database;
 using FilmsAPI.Profile;
 using Microsoft.EntityFrameworkCore;
 using dotenv.net;
+using FilmsAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ DotEnv.Load();
 string? databaseConnection = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 if (string.IsNullOrEmpty(databaseConnection))
 {
-    throw new ApplicationException("A variável de ambiente CONNECTION_STRING não está definida.");
+    throw new ApplicationException("The environment variable is not defined");
 }
 
 builder.Services.AddDbContext<FilmContext>(options =>
@@ -20,6 +21,10 @@ builder.Services.AddDbContext<FilmContext>(options =>
 
 
 builder.Services.AddAutoMapper(typeof(FilmProfile));
+builder.Services.AddScoped<FilmService>();
+builder.Services.AddScoped<AddressService>();
+builder.Services.AddScoped<MovieTheaterService>();
+builder.Services.AddScoped<SectionService>();
 
 // Add services to the container.
 

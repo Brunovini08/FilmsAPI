@@ -2,6 +2,7 @@
 using FilmsAPI.Database;
 using FilmsAPI.Database.Dtos;
 using FilmsAPI.Models;
+using FilmsAPI.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,89 +13,56 @@ namespace FilmsAPI.Controllers;
 [Route("[controller]")]
 public class MovieTheaterController : ControllerBase
 {
-    private FilmContext _context;
-    private IMapper _mapper;
+    private MovieTheaterService _movieTheaterService;
 
-    public MovieTheaterController(FilmContext context, IMapper mapper)
+    public MovieTheaterController(MovieTheaterService movieTheaterService)
     {
-        _context = context;
-        _mapper = mapper;
+        _movieTheaterService = movieTheaterService;
     }
-
     [HttpPost]
     public IActionResult PostMovieTheater([FromBody] CreateMovieTheaterDto createMovieTheaterDto)
     {
-        try
-        {
-            var movieTheater = _mapper.Map<MovieTheater>(createMovieTheaterDto);
-            _context.MovieTheaters.Add(movieTheater);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetMovieTheaterById),
-                new { id = movieTheater.Id }, movieTheater);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        var movieTheater = _movieTheaterService.PostMovieTheater(createMovieTheaterDto);
+        return CreatedAtAction(nameof(GetMovieTheaterById),
+            new { id = movieTheater.Id }, movieTheater);
     }
 
     [HttpGet]
-    public IEnumerable<ReadMovieTheaterDto> GetMovieTheater([FromQuery] int? addressId = null)
+    public IActionResult GetMovieTheater([FromQuery] int? addressId = null)
     {
-        if (addressId == null)
-        {
-            return _mapper.Map<List<ReadMovieTheaterDto>>(_context.MovieTheaters.ToList());
-        }
-
-        return _mapper.Map<List<ReadMovieTheaterDto>>(
-            _context.MovieTheaters.FromSqlRaw($"SELECT Id, Name, AddressId FROM movietheaters WHERE movietheaters.AddressId = {addressId}").ToList()
-            );
+        var movieTheater = _movieTheaterService.GetMovieTheater(addressId);
+        return Ok(movieTheater);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetMovieTheaterById(int id)
     {
-        var movieTheater = _context.MovieTheaters.FirstOrDefault(movieTheater => movieTheater.Id == id);
-        if (movieTheater == null) return NotFound();
-        var movieTheaterDto = _mapper.Map<ReadMovieTheaterDto>(movieTheater);
-        return Ok(movieTheaterDto);
+        var movieTheater = _movieTheaterService.GetMovieTheaterById(id);
+        return Ok(movieTheater);
     }
 
     [HttpPut("{id}")]
     public IActionResult UpdateMovieTheater(int id, [FromBody] UpdateMovieTheaterDto updateMovieTheaterDto)
     {
-        var movieTheater = _context.MovieTheaters.FirstOrDefault(movieTheater => movieTheater.Id == id);
-        if (movieTheater == null) return NotFound();
-        _mapper.Map(updateMovieTheaterDto, movieTheater);
-        _context.SaveChanges();
+        _movieTheaterService.UpdateMovieTheater(id, updateMovieTheaterDto);
         return NoContent();
     }
 
     [HttpPatch("{id}")]
     public IActionResult PatchMovieTheater(int id, JsonPatchDocument<UpdateMovieTheaterDto> movieTheaterPath)
     {
-        var movieTheater = _context.MovieTheaters.FirstOrDefault(movieTheater => movieTheater.Id == id);
-        if (movieTheater == null) return NotFound();
-        var updateMovieTheater = _mapper.Map<UpdateMovieTheaterDto>(movieTheater);
-        movieTheaterPath.ApplyTo(updateMovieTheater, ModelState);
-        if (!TryValidateModel(updateMovieTheater))
+        var sucess = _movieTheaterService.PatchMovieTheater(id, movieTheaterPath, ModelState);
+        if (!sucess)
         {
             return ValidationProblem(ModelState);
         }
-
-        _mapper.Map(updateMovieTheater, movieTheaterPath);
-        _context.SaveChanges();
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult DeleteMovieTheater(int id)
     {
-        var movieTheater = _context.MovieTheaters.FirstOrDefault(movieTheater => movieTheater.Id == id);
-        if (movieTheater == null) return NotFound();
-        _context.Remove(movieTheater);
-        _context.SaveChanges();
+        _movieTheaterService.DeleteMovieTheater(id);
         return NoContent();
     }
 }
