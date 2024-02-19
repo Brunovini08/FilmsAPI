@@ -43,6 +43,7 @@ project-root/
 
 1. **Address:**
    - Cadastrar, visualizar, atualizar e excluir endereços.
+   - Associar endereço a cinema.
 
 2. **Film:**
    - Cadastrar, visualizar, atualizar e excluir filmes.
