@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # API de Filmes em C#/.NET 
 
 ## Descrição
