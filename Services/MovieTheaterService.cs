@@ -11,8 +11,8 @@ namespace FilmsAPI.Services;
 
 public class MovieTheaterService
 {
-    private FilmContext _context;
     private IMapper _mapper;
+    private FilmContext _context;
 
     public MovieTheaterService(FilmContext context, IMapper mapper)
     {
