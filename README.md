@@ -56,10 +56,7 @@ project-root/
 
 1. **Address:**
    - Cadastrar, visualizar, atualizar e excluir endereços.
-<<<<<<< HEAD
-=======
    - Associar endereço a cinema.
->>>>>>> 332b98c3f961e7ac52d12b12e4b90be71da1f136
 
 2. **Film:**
    - Cadastrar, visualizar, atualizar e excluir filmes.
