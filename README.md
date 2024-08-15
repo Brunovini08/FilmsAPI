@@ -32,7 +32,6 @@ project-root/
 |   |-- Profiles/
 |       |-- MappingProfiles.cs
 |-- Services/
-<<<<<<< HEAD
 |       |--AddressService.cs
 |       |--FilmService.cs
 |       |--MovieThaterService.cs
@@ -42,7 +41,6 @@ project-root/
 |       |-- FilmService.cs
 |       |-- MovieThaterService.cs
 |       |-- SectionService.cs
->>>>>>> 332b98c3f961e7ac52d12b12e4b90be71da1f136
 |-- appsettings.json
 |-- .env
 |-- Program.cs
